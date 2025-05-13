@@ -3,12 +3,11 @@
   hosts: server
   become: yes
   vars:
-    queue_name: "MY.APP.QUEUE"
-    qm_name: "QM1"
+    queue_name: {{ survey_vars.queue_name }}
+    qm_name: {{ survey_vars.qm_name }}
     mq_bin_path: "/opt/mqm/bin"
-    mq_user: "mqm"
-    depth_threshold: 100
-
+    mq_user: {{ survey_vars.mq_user }}
+    depth_threshold: {{ survey_vars.depth_threshold }}
   tasks:
 
     - name: Check queue depth
