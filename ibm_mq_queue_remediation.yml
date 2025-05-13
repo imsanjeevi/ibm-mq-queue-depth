@@ -2,17 +2,16 @@
 - name: Remediate IBM MQ Queue Depth Issue
   hosts: server
   become: yes
+  become_user: mqm
   vars:
     queue_name: "{{ survey_vars.queue_name }}"
     qm_name: "{{ survey_vars.qm_name }}"
-    mq_bin_path: "/opt/mqm/bin"
-    mq_user: "{{ lookup('env','mq_user' }}"
     depth_threshold: "{{ survey_vars.depth_threshold | default(100, true) }}"
   tasks:
 
     - name: Check queue depth
       shell: |
-        echo "display qlocal({{ queue_name }}) curdepth" | su - {{ mq_user }} -c "{{ mq_bin_path }}/runmqsc {{ qm_name }}"
+        echo "display qlocal({{ queue_name }}) curdepth" | runmqsc {{ qm_name }}"
       register: queue_depth_output
 
     - name: Parse queue depth
@@ -25,7 +24,7 @@
 
     - name: Purge the queue if depth is too high (>= {{ depth_threshold }})
       shell: |
-        echo "clear qlocal({{ queue_name }})" | su - {{ mq_user }} -c "{{ mq_bin_path }}/runmqsc {{ qm_name }}"
+        echo "clear qlocal({{ queue_name }})" | runmqsc {{ qm_name }}"
       when: curdepth >= depth_threshold
       register: clear_output
 
