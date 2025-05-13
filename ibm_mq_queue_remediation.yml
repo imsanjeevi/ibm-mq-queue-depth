@@ -1,6 +1,6 @@
 ---
 - name: Remediate IBM MQ Queue Depth Issue
-  hosts: mq_servers
+  hosts: server
   become: yes
   vars:
     queue_name: "MY.APP.QUEUE"
