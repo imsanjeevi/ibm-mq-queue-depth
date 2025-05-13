@@ -14,9 +14,15 @@
         echo "display qlocal({{ queue_name }}) curdepth" | runmqsc {{ qm_name }}
       register: queue_depth_output
 
-    - name: Parse queue depth
+    - name: Parse queue depth safely
       set_fact:
-        curdepth: "{{ queue_depth_output.stdout | regex_search('CURDEPTH\\((\\d+)\\)', '\\1') | int }}"
+      curdepth: >-
+        {{
+          queue_depth_output.stdout_lines
+          | select('search', 'CURDEPTH\\(\\d+\\)')
+          | map('regex_search', 'CURDEPTH\\((\\d+)\\)', '\\1')
+          | first | default('0') | int
+        }}
 
     - name: Debug current depth
       debug:
