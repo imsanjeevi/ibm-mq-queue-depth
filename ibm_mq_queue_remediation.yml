@@ -16,13 +16,13 @@
 
     - name: Parse queue depth safely
       set_fact:
-      curdepth: >-
-        {{
-          queue_depth_output.stdout_lines
-          | select('search', 'CURDEPTH\\(\\d+\\)')
-          | map('regex_search', 'CURDEPTH\\((\\d+)\\)', '\\1')
-          | first | default('0') | int
-        }}
+        curdepth: >-
+          {{
+            queue_depth_output.stdout_lines
+            | select('search', 'CURDEPTH\\(\\d+\\)')
+            | map('regex_search', 'CURDEPTH\\((\\d+)\\)', '\\1')
+            | first | default('0') | int
+          }}
 
     - name: Debug current depth
       debug:
