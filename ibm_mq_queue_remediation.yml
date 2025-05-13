@@ -31,11 +31,11 @@
     - name: Purge the queue if depth is too high (>= {{ depth_threshold }})
       shell: |
         echo "clear qlocal({{ queue_name }})" | runmqsc {{ qm_name }}
-      when: curdepth >= depth_threshold
+      # when: curdepth >= depth_threshold
       register: clear_output
 
     - name: Show result of purge
       debug:
         var: clear_output.stdout_lines
-      when: curdepth >= depth_threshold
+      # when: curdepth >= depth_threshold
  
