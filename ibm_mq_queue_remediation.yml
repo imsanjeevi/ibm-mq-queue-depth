@@ -11,7 +11,7 @@
 
     - name: Check queue depth
       shell: |
-        echo "display qlocal({{ queue_name }}) curdepth" | runmqsc {{ qm_name }}"
+        echo "display qlocal({{ queue_name }}) curdepth" | runmqsc {{ qm_name }}
       register: queue_depth_output
 
     - name: Parse queue depth
@@ -24,7 +24,7 @@
 
     - name: Purge the queue if depth is too high (>= {{ depth_threshold }})
       shell: |
-        echo "clear qlocal({{ queue_name }})" | runmqsc {{ qm_name }}"
+        echo "clear qlocal({{ queue_name }})" | runmqsc {{ qm_name }}
       when: curdepth >= depth_threshold
       register: clear_output
 
